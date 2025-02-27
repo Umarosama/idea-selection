@@ -1,6 +1,20 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "idea_selection");
+$host = getenv("MYSQLHOST");
+$user = getenv("MYSQLUSER");
+$password = getenv("MYSQLPASSWORD");
+$database = getenv("MYSQLDATABASE");
+$port = getenv("MYSQLPORT"); // Make sure to use the correct port
+
+// Create connection
+$conn = new mysqli($host, $user, $password, $database, $port);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+echo "Connected successfully!";
+
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
