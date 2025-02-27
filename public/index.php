@@ -1,10 +1,12 @@
 <?php
 session_start();
-$host = getenv("MYSQLHOST");
-$user = getenv("MYSQLUSER");
-$password = getenv("MYSQLPASSWORD");
+
+// Corrected environment variable names
+$host = getenv("MYSQLHOST"); 
+$user = getenv("MYSQLUSER"); 
+$password = getenv("MYSQLPASSWORD"); 
 $database = getenv("MYSQLDATABASE");
-$port = getenv("MYSQLPORT"); // Make sure to use the correct port
+$port = getenv("MYSQLPORT") ?: 3306; // Default to 3306 if not set
 
 // Create connection
 $conn = new mysqli($host, $user, $password, $database, $port);
@@ -15,7 +17,7 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully!";
 
-
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -40,6 +42,7 @@ if ($user['selected_idea_id']) {
 $sql = "SELECT * FROM ideas WHERE is_selected = FALSE";
 $result = $conn->query($sql);
 ?>
+
 
 <!DOCTYPE html>
 <html>
